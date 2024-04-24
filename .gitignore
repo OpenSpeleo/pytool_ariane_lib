@@ -162,7 +162,12 @@ cython_debug/
 # Twine
 .pypirc
 
+# Ariane Backup Files
+*.bak
+
 # Experiment files
 /*.txt
 /*.json
 /main.py
+tests/artifacts/*.xml
+tests/artifacts/*.short
