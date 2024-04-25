@@ -5,41 +5,16 @@ import xmltodict
 import json
 
 from pathlib import Path
-from typing import Any
 from zipfile import ZipFile
 
+from ariane_lib.key_map import KeyMapCls
+from ariane_lib.key_map import KeyMapMeta
+from ariane_lib.key_map import OptionalArgList
 from ariane_lib.section import SurveySection
 from ariane_lib.shot import SurveyShot
 from ariane_lib.types import ArianeFileType
-from ariane_lib.types import UnitType
-from ariane_lib.utils import maybe_convert_str_type
-from ariane_lib.utils import KeyMapCls
-from ariane_lib.utils import OptionalArgList
 
 from functools import cached_property
-
-
-_KEY_MAP = KeyMapCls({
-    "constraints": ["Constraints"],
-    "cartoEllipse": ["CartoEllipse"],
-    "cartoLine": ["CartoLine"],
-    "cartoLinkedSurface": ["CartoLinkedSurface"],
-    "cartoOverlay": ["CartoOverlay"],
-    "cartoPage": ["CartoPage"],
-    "cartoRectangle": ["CartoRectangle"],
-    "cartoSelection": ["CartoSelection"],
-    "cartoSpline": ["CartoSpline"],
-    "firstStartAbsoluteElevation": ["firstStartAbsoluteElevation"],
-    "geoCoding": OptionalArgList(["geoCoding"]),
-    "name": ["caveName"],
-    "layers": ["Layers"],
-    "listAnnotation": ["ListAnnotation"],
-    "unit": ["unit"],
-    "useMagneticAzimuth": ["useMagneticAzimuth"],
-    "_cavefile": ["CaveFile"],
-    "_shots_list": ["Data"],
-    "_shots": ["SurveyData", "SRVD"]
-})
 
 
 def _extract_zip(input_zip):
@@ -47,7 +22,29 @@ def _extract_zip(input_zip):
     return {name: input_zip.read(name) for name in input_zip.namelist()}
 
 
-class ArianeParser(object):
+class ArianeParser(object, metaclass=KeyMapMeta):
+
+    _KEY_MAP = KeyMapCls({
+        "constraints": ["Constraints"],
+        "cartoEllipse": ["CartoEllipse"],
+        "cartoLine": ["CartoLine"],
+        "cartoLinkedSurface": ["CartoLinkedSurface"],
+        "cartoOverlay": ["CartoOverlay"],
+        "cartoPage": ["CartoPage"],
+        "cartoRectangle": ["CartoRectangle"],
+        "cartoSelection": ["CartoSelection"],
+        "cartoSpline": ["CartoSpline"],
+        "firstStartAbsoluteElevation": ["firstStartAbsoluteElevation"],
+        "geoCoding": OptionalArgList(["geoCoding"]),
+        "name": ["caveName"],
+        "layers": ["Layers"],
+        "listAnnotation": ["ListAnnotation"],
+        "unit": ["unit"],
+        "useMagneticAzimuth": ["useMagneticAzimuth"],
+        "_cavefile": ["CaveFile"],
+        "_shots_list": ["Data"],
+        "_shots": ["SurveyData", "SRVD"]
+    })
 
     def __init__(self, filepath: str, pre_cache : bool = True) -> None:
 
@@ -62,21 +59,10 @@ class ArianeParser(object):
         else:
             # Ensure at least that the file type is valid
             _ = self.filetype
-    
-    def __getattribute__(self, name: str) -> Any:
-        if name in _KEY_MAP.keys():
-            value = _KEY_MAP.fetch(self.data, name)
-            
-            if name == "unit":
-                return UnitType.from_str(value)
-            
-            return maybe_convert_str_type(value)
-            
-        return super().__getattribute__(name)
-    
+        
     def __repr__(self) -> str:
         repr = f"[ArianeSurveyFile {self.filetype.name}] `{self.filepath}`:"
-        for key in _KEY_MAP.keys():
+        for key in self._KEY_MAP.keys():
             if key.startswith("_"):
                 continue
             repr += f"\n\t- {key}: {getattr(self, key)}"
@@ -142,7 +128,7 @@ class ArianeParser(object):
 
     @property
     def data(self):
-        return _KEY_MAP.fetch(self._data, "_cavefile")
+        return self._KEY_MAP.fetch(self._data, "_cavefile")
 
     @property
     def filepath(self):
@@ -158,8 +144,8 @@ class ArianeParser(object):
     @cached_property
     def shots(self):
         return [
-            SurveyShot(data=survey_shot) 
-            for survey_shot in _KEY_MAP.fetch(self._shots_list, "_shots")
+            SurveyShot(data=survey_shot)
+            for survey_shot in self._KEY_MAP.fetch(self._shots_list, "_shots")
         ]
     
     @cached_property
