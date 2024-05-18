@@ -106,8 +106,3 @@ testpaths = [
 addopts = "-vvv --cov=ariane_lib --cov-report=term-missing"
 # addopts = "-vvv --cov=ariane_lib --cov-report=term-missing --capture=no"
 
-
-[tool.pytest_env]
-RAY_ADDRESS = "local"
-NVIDIA_DISABLE_REQUIRE=1
-
