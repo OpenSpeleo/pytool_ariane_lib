@@ -77,8 +77,8 @@ test = [
 
 [project.urls]
 "Homepage" = "https://pypi.org/project/ariane-lib/"
-"Bug Reports" = "https://github.com/MX-SpeleoSurvey/pytool_ariane_lib/issues"
-"Source" = "https://github.com/MX-SpeleoSurvey/pytool_ariane_lib"
+"Bug Reports" = "https://github.com/SpeleoDB/pytool_ariane_lib/issues"
+"Source" = "https://github.com/SpeleoDB/pytool_ariane_lib"
 
 [project.scripts]
 ariane = "ariane_lib.commands.main:main"
@@ -105,4 +105,3 @@ testpaths = [
 ]
 addopts = "-vvv --cov=ariane_lib --cov-report=term-missing"
 # addopts = "-vvv --cov=ariane_lib --cov-report=term-missing --capture=no"
-
