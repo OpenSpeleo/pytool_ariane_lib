@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-import datetime
 import json
-
-from typing import Any
 
 from ariane_lib.key_map import KeyMapCls
 from ariane_lib.key_map import KeyMapMeta
@@ -53,7 +50,7 @@ class SurveyShot(metaclass=KeyMapMeta):
     # def __getattribute__(self, name: str) -> Any:
     #     # if name == "_KEY_MAP":
     #     #     return super().__getattribute__(name)
-        
+
     #     if name in _KEY_MAP.keys():
     #         value = _KEY_MAP.fetch(self.data, name)
     #         if name == "profiletype":
