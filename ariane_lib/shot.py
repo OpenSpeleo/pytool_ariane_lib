@@ -10,7 +10,7 @@ class SurveyShot(metaclass=KeyMapMeta):
 
     _KEY_MAP = KeyMapCls(
         {
-            "azimut": ["Azimut", "AZ"],
+            "azimuth": ["Azimut", "AZ"],
             "closuretoid": ["ClosureToID", "CID"],
             "color": ["Color", "CL"],
             "comment": ["Comment", "CM"],

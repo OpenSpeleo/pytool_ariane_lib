@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import datetime
+from typing import Any
 
 from collections import UserDict
 from collections import UserList
@@ -16,15 +17,13 @@ class OptionalArgList(UserList):
 
 
 class KeyMapCls(UserDict):
-    def fetch(self, data, key):
+    def _find_dict_key(self, data, key) -> str:
         if key in self.keys():
             possible_keys = self[key]
             try:
                 for tentative_key in self[key]:
-                    try:
-                        return data[tentative_key]
-                    except KeyError:
-                        continue
+                    if tentative_key in data:
+                        return tentative_key
                 else:
                     raise KeyError(f"Unable to find any of {self[key]}")
             except KeyError:
@@ -33,6 +32,14 @@ class KeyMapCls(UserDict):
                 raise
         else:
             raise ValueError(f"The key `{key}` does not exists inside `data`")
+
+    def fetch(self, data, key) -> Any | None:
+        target_key = self._find_dict_key(data, key)
+        return data[target_key] if target_key is not None else None
+
+    def set_attr(self, data, key, value) -> None:
+        target_key = self._find_dict_key(data, key)
+        data[target_key] = value
 
 
 class KeyMapMeta(type):
@@ -45,44 +52,49 @@ class KeyMapMeta(type):
                 f"The class {name} does not define a `_KEY_MAP` "
                 "class attribute"
             ) from e
-    
+
         def fetcher(self, name):
             value = self._KEY_MAP.fetch(self.data, name)
 
             match name:
-                
+
                 case "color":
                     return value
 
                 case "date":
                     year, month, day = [int(v) for v in value.split("-")]
                     return datetime.datetime(year=year, month=month, day=day)
-            
+
                 case "profiletype":
                     return ProfileType.from_str(value)
 
                 case "type":
                     return ShotType.from_str(value)
-                
+
                 case "unit":
                     return UnitType.from_str(value)
-                
+
                 case _:
                     return maybe_convert_str_type(value)
-        
+
         attrs["_fetch_property_value"] = fetcher
 
         # Definining all the properties
         for key in _KEY_MAP.keys():
-            
-            # nested function necessary to avoid 
+
+            # nested function necessary to avoid
             # reference leak on the closure variable: "name"
             def wrapper(name):
                 @property
                 def inner(self):
                     return self._fetch_property_value(name)
+
+                @inner.setter
+                def inner(self, value) -> None:
+                    self._KEY_MAP.set_attr(self.data, name, value)
+
                 return inner
-            
+
             attrs[key] = wrapper(name=key)
 
         obj = super().__new__(cls, name, bases, attrs)

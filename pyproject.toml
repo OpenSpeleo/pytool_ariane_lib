@@ -86,8 +86,8 @@ test = [
 [project.scripts]
 ariane = "ariane_lib.commands.main:main"
 
-# [project.entry-points."ariane.actions"]
-# convert = "ariane_lib.commands.convert:convert"
+[project.entry-points."ariane.actions"]
+convert = "ariane_lib.commands.convert:convert"
 
 # # This is configuration specific to the `setuptools` build backend.
 # # If you are using a different build backend, you will need to change this.
