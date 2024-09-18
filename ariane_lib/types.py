@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from enum import IntEnum
+from pathlib import Path
 
 
 class ArianeFileType(IntEnum):
@@ -8,7 +9,7 @@ class ArianeFileType(IntEnum):
     TMLU = 1
 
     @classmethod
-    def from_str(cls, value):
+    def from_str(cls, value: str):
         value = value.upper()
         match value:
             case "TML":
@@ -17,6 +18,13 @@ class ArianeFileType(IntEnum):
                 return cls.TMLU
             case _:
                 raise ValueError(f"Unknown value: {value}")
+
+    @classmethod
+    def from_path(cls, filepath: str | Path):
+        if not isinstance(filepath, Path):
+            filepath = Path(filepath)
+
+        return cls.from_str(filepath.suffix.upper()[1:])  # Remove the leading `.`
 
 
 class UnitType(IntEnum):

@@ -56,6 +56,8 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
+    "defusedxml>=0.7,<0.8",
+    "dicttoxml2>=2.1,<2.2",
     "xmltodict>=0.13,<0.14"
 ]
 
@@ -88,6 +90,7 @@ ariane = "ariane_lib.commands.main:main"
 
 [project.entry-points."ariane.actions"]
 convert = "ariane_lib.commands.convert:convert"
+correct = "ariane_lib.commands.correct:correct"
 
 # # This is configuration specific to the `setuptools` build backend.
 # # If you are using a different build backend, you will need to change this.
