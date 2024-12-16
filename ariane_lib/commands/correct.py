@@ -15,7 +15,7 @@ def correct(args: list[str]) -> int:
         type=str,
         default=None,
         required=True,
-        help="Mnemo DMP Source File."
+        help="Mnemo TML Source File."
     )
 
     parser.add_argument(
@@ -40,7 +40,7 @@ def correct(args: list[str]) -> int:
         type=float,
         required=False,
         default=None,
-        help="Apply post-survey recalibration scaling factor to a DMP file."
+        help="Apply post-survey recalibration scaling factor to a TML file."
     )
 
     parser.add_argument(
@@ -48,7 +48,7 @@ def correct(args: list[str]) -> int:
         type=float,
         required=False,
         default=None,
-        help="Apply post-survey recalibration compass offset to a DMP file."
+        help="Apply post-survey recalibration compass offset to a TML file."
     )
 
     parser.add_argument(
@@ -57,7 +57,7 @@ def correct(args: list[str]) -> int:
         required=False,
         default=None,
         help=(
-            "Apply post-survey depth offset to a DMP file. "
+            "Apply post-survey depth offset to a TML file. "
             "`offset > 0` => correcting deeper. "
             "`offset < 0` => correcting shallower."
         )
