@@ -3,26 +3,26 @@
 import ast
 
 
-def strtobool (val):
+def strtobool(val):
     """Convert a string representation of truth to true (1) or false (0).
     True values are 'y', 'yes', 't', 'true', and 'on'; false values
     are 'n', 'no', 'f', 'false', and 'off'.  Raises ValueError if
     'val' is anything else.
     """
     val = val.lower()
-    if val in ('y', 'yes', 't', 'true', 'on'):
+    if val in ("y", "yes", "t", "true", "on"):
         return True
-    elif val in ('n', 'no', 'f', 'false', 'off'):
+
+    if val in ("n", "no", "f", "false", "off"):
         return False
-    else:
-        raise ValueError(f"invalid truth value {val}")
+
+    raise ValueError(f"invalid truth value {val}")
 
 
 def maybe_convert_str_type(value):
-
     if not isinstance(value, str):
         return value
-    
+
     # maybe convert to bool
     try:
         return strtobool(value)

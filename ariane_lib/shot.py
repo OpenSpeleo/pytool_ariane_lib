@@ -7,7 +7,6 @@ from ariane_lib.key_map import KeyMapMeta
 
 
 class SurveyShot(metaclass=KeyMapMeta):
-
     _KEY_MAP = KeyMapCls(
         {
             "azimuth": ["Azimut", "AZ"],
@@ -42,10 +41,10 @@ class SurveyShot(metaclass=KeyMapMeta):
         self._data = data
 
     def __repr__(self) -> str:
-        repr = f"[{self.__class__.__name__} {self.id:04d}]:"
-        for key in self._KEY_MAP.keys():
-            repr += f"\n\t- {key}: {getattr(self, key)}"
-        return repr
+        repr_str = f"[{self.__class__.__name__} {self.id:04d}]:"
+        for key in self._KEY_MAP:
+            repr_str += f"\n\t- {key}: {getattr(self, key)}"
+        return repr_str
 
     # def __getattribute__(self, name: str) -> Any:
     #     # if name == "_KEY_MAP":

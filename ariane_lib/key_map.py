@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
 import datetime
-from typing import Any
-
 from collections import UserDict
 from collections import UserList
+from typing import Any
 
+from ariane_lib.type_utils import maybe_convert_str_type
 from ariane_lib.types import ProfileType
 from ariane_lib.types import ShotType
 from ariane_lib.types import UnitType
-from ariane_lib.type_utils import maybe_convert_str_type
 
 
 class OptionalArgList(UserList):
@@ -24,8 +23,9 @@ class KeyMapCls(UserDict):
                 for tentative_key in self[key]:
                     if tentative_key in data:
                         return tentative_key
-                else:
-                    raise KeyError(f"Unable to find any of {self[key]}")
+
+                raise KeyError(f"Unable to find any of {self[key]}")  # noqa: TRY301
+
             except KeyError:
                 if isinstance(possible_keys, OptionalArgList):
                     return None
@@ -44,26 +44,23 @@ class KeyMapCls(UserDict):
 
 class KeyMapMeta(type):
     def __new__(cls, name, bases, attrs):
-
         try:
             _KEY_MAP = attrs["_KEY_MAP"]
         except KeyError as e:
             raise AttributeError(
-                f"The class {name} does not define a `_KEY_MAP` "
-                "class attribute"
+                f"The class {name} does not define a `_KEY_MAP` class attribute"
             ) from e
 
         def fetcher(self, name):
             value = self._KEY_MAP.fetch(self.data, name)
 
             match name:
-
                 case "color":
                     return value
 
                 case "date":
-                    year, month, day = [int(v) for v in value.split("-")]
-                    return datetime.datetime(year=year, month=month, day=day)
+                    year, month, day = (int(v) for v in value.split("-"))
+                    return datetime.datetime(year=year, month=month, day=day)  # noqa: DTZ001
 
                 case "profiletype":
                     return ProfileType.from_str(value)
@@ -80,8 +77,7 @@ class KeyMapMeta(type):
         attrs["_fetch_property_value"] = fetcher
 
         # Definining all the properties
-        for key in _KEY_MAP.keys():
-
+        for key in _KEY_MAP:
             # nested function necessary to avoid
             # reference leak on the closure variable: "name"
             def wrapper(name):
@@ -97,6 +93,4 @@ class KeyMapMeta(type):
 
             attrs[key] = wrapper(name=key)
 
-        obj = super().__new__(cls, name, bases, attrs)
-
-        return obj
+        return super().__new__(cls, name, bases, attrs)

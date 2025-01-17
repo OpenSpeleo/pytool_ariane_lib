@@ -15,7 +15,7 @@ def correct(args: list[str]) -> int:
         type=str,
         default=None,
         required=True,
-        help="Mnemo TML Source File."
+        help="Mnemo TML Source File.",
     )
 
     parser.add_argument(
@@ -24,7 +24,7 @@ def correct(args: list[str]) -> int:
         type=str,
         default=None,
         required=True,
-        help="Path to save the converted file at."
+        help="Path to save the converted file at.",
     )
 
     parser.add_argument(
@@ -40,7 +40,7 @@ def correct(args: list[str]) -> int:
         type=float,
         required=False,
         default=None,
-        help="Apply post-survey recalibration scaling factor to a TML file."
+        help="Apply post-survey recalibration scaling factor to a TML file.",
     )
 
     parser.add_argument(
@@ -48,7 +48,7 @@ def correct(args: list[str]) -> int:
         type=float,
         required=False,
         default=None,
-        help="Apply post-survey recalibration compass offset to a TML file."
+        help="Apply post-survey recalibration compass offset to a TML file.",
     )
 
     parser.add_argument(
@@ -60,7 +60,7 @@ def correct(args: list[str]) -> int:
             "Apply post-survey depth offset to a TML file. "
             "`offset > 0` => correcting deeper. "
             "`offset < 0` => correcting shallower."
-        )
+        ),
     )
 
     parser.add_argument(
@@ -78,13 +78,14 @@ def correct(args: list[str]) -> int:
 
     output_file = Path(parsed_args.output_file)
     if output_file.exists() and not parsed_args.overwrite:
-        raise FileExistsError(f"The file {output_file} already existing. "
-                              "Please pass the flag `--overwrite` to ignore.")
+        raise FileExistsError(
+            f"The file {output_file} already existing. "
+            "Please pass the flag `--overwrite` to ignore."
+        )
 
     survey = ArianeParser(input_file, pre_cache=True)
 
     for shot in survey.shots:
-
         if parsed_args.length_scaling is not None:
             shot.length = round(shot.length * parsed_args.length_scaling, ndigits=2)
 
@@ -93,7 +94,9 @@ def correct(args: list[str]) -> int:
             shot.depthin = round(shot.depthin + parsed_args.depth_offset, ndigits=2)
 
         if parsed_args.compass_offset is not None:
-            shot.azimuth = round((shot.azimuth + parsed_args.compass_offset) % 360, ndigits=0)
+            shot.azimuth = round(
+                (shot.azimuth + parsed_args.compass_offset) % 360, ndigits=0
+            )
 
         if parsed_args.reverse_azimuth:
             shot.azimuth = round((shot.azimuth + 180) % 360, ndigits=0)
