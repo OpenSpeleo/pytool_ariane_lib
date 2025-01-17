@@ -2,54 +2,46 @@
 
 import unittest
 
+import pytest
+
+from ariane_lib.key_map import KeyMapMeta
 from ariane_lib.parser import ArianeParser
 from ariane_lib.shot import SurveyShot
-from ariane_lib.key_map import KeyMapMeta
 
 
 class KeyMapTest(unittest.TestCase):
-
     def test_invalid_key(self):
         a = {}
-        with self.assertRaises(ValueError):
-            _ = ArianeParser._KEY_MAP.fetch(a, "CHUCK NORRIS")
-        with self.assertRaises(ValueError):
-            _ = SurveyShot._KEY_MAP.fetch(a, "CHUCK NORRIS")
+        with pytest.raises(ValueError):
+            _ = ArianeParser._KEY_MAP.fetch(a, "CHUCK NORRIS")  # noqa: SLF001
+        with pytest.raises(ValueError):
+            _ = SurveyShot._KEY_MAP.fetch(a, "CHUCK NORRIS")  # noqa: SLF001
 
     def test_missing_key(self):
         data = {}
-        with self.assertRaises(KeyError):
-            _ = ArianeParser._KEY_MAP.fetch(data, "name")
-        with self.assertRaises(KeyError):
-            _ = SurveyShot._KEY_MAP.fetch(data, "id")
+        with pytest.raises(KeyError):
+            _ = ArianeParser._KEY_MAP.fetch(data, "name")  # noqa: SLF001
+        with pytest.raises(KeyError):
+            _ = SurveyShot._KEY_MAP.fetch(data, "id")  # noqa: SLF001
 
     def _test_valid_key(self, data):
-        self.assertTrue(ArianeParser._KEY_MAP.fetch(data, "_shots"))
-        self.assertTrue(SurveyShot._KEY_MAP.fetch(data, "depthin"))
+        assert ArianeParser._KEY_MAP.fetch(data, "_shots")  # noqa: SLF001
+        assert SurveyShot._KEY_MAP.fetch(data, "depthin")  # noqa: SLF001
 
     def test_valid_key_tml(self):
-        data = {
-            "DepthIn": True,
-            "SurveyData": True
-        }
+        data = {"DepthIn": True, "SurveyData": True}
         self._test_valid_key(data)
 
     def test_valid_key_tmlu(self):
-        data = {
-            "DPI": True,
-            "SRVD": True
-        }
-        self._test_valid_key(data)
+        self._test_valid_key({"DPI": True, "SRVD": True})
 
     def test_optional_key(self):
-        data = {
-            "geoCoding": True
-        }
-        self.assertIsNone(ArianeParser._KEY_MAP.fetch({}, "geoCoding"))
-        self.assertTrue(ArianeParser._KEY_MAP.fetch(data, "geoCoding"))
+        assert ArianeParser._KEY_MAP.fetch({}, "geoCoding") is None  # noqa: SLF001
+        assert ArianeParser._KEY_MAP.fetch({"geoCoding": True}, "geoCoding")  # noqa: SLF001
 
     def test_invalid_class_creation(self):
-        with self.assertRaises(AttributeError):
+        with pytest.raises(AttributeError):
+
             class ImproperCls(metaclass=KeyMapMeta):
                 pass
 
