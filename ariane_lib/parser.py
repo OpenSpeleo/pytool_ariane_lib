@@ -11,12 +11,12 @@ import xmltodict
 from defusedxml.minidom import parseString
 from dicttoxml2 import dicttoxml
 
+from ariane_lib.enums import ArianeFileType
 from ariane_lib.key_map import KeyMapCls
 from ariane_lib.key_map import KeyMapMeta
 from ariane_lib.key_map import OptionalArgList
 from ariane_lib.section import SurveySection
 from ariane_lib.shot import SurveyShot
-from ariane_lib.types import ArianeFileType
 
 
 def _extract_zip(input_zip):

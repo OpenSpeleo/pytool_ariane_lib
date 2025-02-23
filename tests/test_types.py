@@ -2,28 +2,29 @@
 
 import unittest
 
-from ariane_lib.types import UnitType
-from ariane_lib.types import ArianeFileType
-from ariane_lib.types import ProfileType
-from ariane_lib.types import ShotType
+import pytest
+
+from ariane_lib.enums import ArianeFileType
+from ariane_lib.enums import ProfileType
+from ariane_lib.enums import ShotType
+from ariane_lib.enums import UnitType
 
 
 class EnumTypesTest(unittest.TestCase):
-
-    def test_invalid_unitType(self):
-        with self.assertRaises(ValueError):
+    def test_invalid_unitType(self):  # noqa: N802
+        with pytest.raises(ValueError, match="Unknown value: LIGHTYEAR"):
             _ = UnitType.from_str("lightyear")
 
-    def test_invalid_fileType(self):
-        with self.assertRaises(ValueError):
+    def test_invalid_fileType(self):  # noqa: N802
+        with pytest.raises(ValueError, match="Unknown value: TOML"):
             _ = ArianeFileType.from_str("toml")
 
-    def test_invalid_profileType(self):
-        with self.assertRaises(ValueError):
+    def test_invalid_profileType(self):  # noqa: N802
+        with pytest.raises(ValueError, match="Unknown value: DIAGONAL"):
             _ = ProfileType.from_str("diagonal")
 
-    def test_invalid_shotType(self):
-        with self.assertRaises(ValueError):
+    def test_invalid_shotType(self):  # noqa: N802
+        with pytest.raises(ValueError, match="Unknown value: HYPOTHETICAL"):
             _ = ShotType.from_str("hypothetical")
 
 

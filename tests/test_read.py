@@ -1,24 +1,37 @@
 #!/usr/bin/env python
 
 import unittest
-
 from pathlib import Path
+
+import pytest
 from parameterized import parameterized_class
 
+from ariane_lib.enums import ArianeFileType
 from ariane_lib.parser import ArianeParser
-from ariane_lib.types import ArianeFileType
+
 
 @parameterized_class(
     ("filepath", "sha256"),
     [
-        ("tests/artifacts/test_simple.tml", "102f4c0ba7617a72147b2ab7d4e3f28117799092a9f29fcae6b9d19722b39b93"),
-        ("tests/artifacts/test_simple.tmlu", "8aca1fb860f85440d69d8101446bfd7a9e23db79197612ca195f2dfae05f583c"),
-        ("tests/artifacts/test_with_walls.tml", "51577dc4557ea47bf564981037d9b3c8cc31c227bffdaa948346a07f101179a8"),
-        ("tests/artifacts/test_large.tml", "737d11e6b0a8303a0d966ed5c1b62693b716440ca7ee89f79e2c55eea8bdd9df")
-    ]
+        (
+            "tests/artifacts/test_simple.tml",
+            "102f4c0ba7617a72147b2ab7d4e3f28117799092a9f29fcae6b9d19722b39b93",
+        ),
+        (
+            "tests/artifacts/test_simple.tmlu",
+            "8aca1fb860f85440d69d8101446bfd7a9e23db79197612ca195f2dfae05f583c",
+        ),
+        (
+            "tests/artifacts/test_with_walls.tml",
+            "51577dc4557ea47bf564981037d9b3c8cc31c227bffdaa948346a07f101179a8",
+        ),
+        (
+            "tests/artifacts/test_large.tml",
+            "737d11e6b0a8303a0d966ed5c1b62693b716440ca7ee89f79e2c55eea8bdd9df",
+        ),
+    ],
 )
 class ParametrizedArianeFileTest(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls) -> None:
         cls._file = Path(cls.filepath)
@@ -41,10 +54,10 @@ class ParametrizedArianeFileTest(unittest.TestCase):
         else:
             raise ValueError(f"Unexpected extension: {extension}")
 
-        self.assertEqual(filetype, self._survey.filetype)
+        assert filetype == self._survey.filetype
 
     def test_hash(self):
-        self.assertEqual(self.sha256, self._survey.hash)
+        assert self.sha256 == self._survey.hash
 
     def test_load(self):
         survey = ArianeParser(self._file, pre_cache=True)
@@ -65,20 +78,18 @@ class ParametrizedArianeFileTest(unittest.TestCase):
         _ = self._survey.date_last_opened
 
     def test_shot_count_consistent(self):
-        self.assertEqual(
-            len(self._survey.shots),
-            sum([len(section) for section in self._survey.sections])
+        assert len(self._survey.shots) == sum(
+            [len(section) for section in self._survey.sections]
         )
 
 
 class ArianeFileTest(unittest.TestCase):
-
     def test_file_not_existing(self):
-        with self.assertRaises(FileNotFoundError):
+        with pytest.raises(FileNotFoundError):
             _ = ArianeParser("chuck_norris.tml", pre_cache=False)
 
     def test_file_wrong_filetype(self):
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             _ = ArianeParser("tests/artifacts/pyproject.toml", pre_cache=False)
 
 

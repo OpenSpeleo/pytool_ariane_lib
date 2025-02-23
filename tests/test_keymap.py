@@ -12,9 +12,13 @@ from ariane_lib.shot import SurveyShot
 class KeyMapTest(unittest.TestCase):
     def test_invalid_key(self):
         a = {}
-        with pytest.raises(ValueError):
+        with pytest.raises(
+            ValueError, match="The key `CHUCK NORRIS` does not exists inside `data`"
+        ):
             _ = ArianeParser._KEY_MAP.fetch(a, "CHUCK NORRIS")  # noqa: SLF001
-        with pytest.raises(ValueError):
+        with pytest.raises(
+            ValueError, match="The key `CHUCK NORRIS` does not exists inside `data`"
+        ):
             _ = SurveyShot._KEY_MAP.fetch(a, "CHUCK NORRIS")  # noqa: SLF001
 
     def test_missing_key(self):

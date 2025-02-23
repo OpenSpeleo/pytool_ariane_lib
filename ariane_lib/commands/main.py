@@ -5,8 +5,9 @@ from importlib.metadata import entry_points
 
 import ariane_lib
 
+
 def main():
-    registered_commands = entry_points(group='ariane.actions')
+    registered_commands = entry_points(group="ariane.actions")
 
     parser = argparse.ArgumentParser(prog="ariane_lib")
     parser.add_argument(

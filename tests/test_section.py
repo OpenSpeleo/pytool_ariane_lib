@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import unittest
-
 from pathlib import Path
 
 from ariane_lib.parser import ArianeParser
@@ -20,7 +19,7 @@ class SectionTest(unittest.TestCase):
         self._survey = ArianeParser(self._file, pre_cache=False)
 
     def test_repr(self):
-        for section in self._survey.sections: 
+        for section in self._survey.sections:
             _ = section.__repr__()
 
     def tests_depth_stats(self):
@@ -35,7 +34,7 @@ class SectionTest(unittest.TestCase):
                 "max_depth": 0.0,
                 "min_depth": 0.0,
                 "avg_depth": 0.0,
-                "median_depth": 0.0
+                "median_depth": 0.0,
             },
             "Section 1": {
                 "total_shots": 813,
@@ -47,7 +46,7 @@ class SectionTest(unittest.TestCase):
                 "max_depth": 186.0,
                 "min_depth": 0.0,
                 "avg_depth": 112.6,
-                "median_depth": 140.0
+                "median_depth": 140.0,
             },
             "Section 2": {
                 "total_shots": 813,
@@ -59,7 +58,7 @@ class SectionTest(unittest.TestCase):
                 "max_depth": 186.0,
                 "min_depth": 0.0,
                 "avg_depth": 106.3,
-                "median_depth": 111.0
+                "median_depth": 111.0,
             },
             "Section 3": {
                 "total_shots": 813,
@@ -71,14 +70,14 @@ class SectionTest(unittest.TestCase):
                 "max_depth": 186.0,
                 "min_depth": 0.0,
                 "avg_depth": 101.2,
-                "median_depth": 109.0
+                "median_depth": 109.0,
             },
         }
 
         for section in self._survey.sections:
             section_data = data[section.name]
-            for key in section_data.keys():
-                self.assertEqual(getattr(section, key), section_data[key])
+            for key in section_data:
+                assert getattr(section, key) == section_data[key]
 
 
 if __name__ == "__main__":

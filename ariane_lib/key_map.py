@@ -5,10 +5,10 @@ from collections import UserDict
 from collections import UserList
 from typing import Any
 
+from ariane_lib.enums import ProfileType
+from ariane_lib.enums import ShotType
+from ariane_lib.enums import UnitType
 from ariane_lib.type_utils import maybe_convert_str_type
-from ariane_lib.types import ProfileType
-from ariane_lib.types import ShotType
-from ariane_lib.types import UnitType
 
 
 class OptionalArgList(UserList):
@@ -43,7 +43,7 @@ class KeyMapCls(UserDict):
 
 
 class KeyMapMeta(type):
-    def __new__(cls, name, bases, attrs):
+    def __new__(cls, name, bases, attrs):  # noqa: C901
         try:
             _KEY_MAP = attrs["_KEY_MAP"]
         except KeyError as e:

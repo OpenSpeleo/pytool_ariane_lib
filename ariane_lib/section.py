@@ -8,17 +8,15 @@ from ariane_lib.shot import SurveyShot
 
 
 def rounded_property(decimal):
-    def inner(func):
+    def decorator(func):
         @property
-        def wrapper(*args, **kwargs):
-            val = round(func(*args, **kwargs), decimal)
-            if decimal == 0:
-                val = int(val)
-            return val
+        def wrapper(instance):
+            val = round(func(instance), decimal)
+            return int(val) if decimal == 0 else val
 
         return wrapper
 
-    return inner
+    return decorator
 
 
 class SurveySection:
