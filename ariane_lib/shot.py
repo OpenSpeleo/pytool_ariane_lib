@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import json
+import orjson
 
 from ariane_lib.key_map import KeyMapCls
 from ariane_lib.key_map import KeyMapMeta
@@ -71,4 +71,6 @@ class SurveyShot(metaclass=KeyMapMeta):
         return self._data
 
     def to_json(self):
-        return json.dumps(self.data, indent=4, sort_keys=True)
+        return orjson.dumps(
+            self.data, None, option=(orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS)
+        ).decode("utf-8")

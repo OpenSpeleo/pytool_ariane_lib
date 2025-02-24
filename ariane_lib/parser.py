@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import hashlib
-import json
 import tempfile
 import zipfile
 from functools import cached_property
 from pathlib import Path
 
+import orjson
 import xmltodict
 from defusedxml.minidom import parseString
 from dicttoxml2 import dicttoxml
@@ -119,7 +119,9 @@ class ArianeParser(metaclass=KeyMapMeta):
     # Export Formats
 
     def to_json(self):
-        return json.dumps(self.data, indent=4, sort_keys=True)
+        return orjson.dumps(
+            self.data, None, option=(orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS)
+        ).decode("utf-8")
 
     def to_tml(self, filepath: Path | str) -> None:
         if isinstance(filepath, str):

@@ -90,7 +90,7 @@ class ArianeFileTest(unittest.TestCase):
 
     def test_file_wrong_filetype(self):
         with pytest.raises(TypeError):
-            _ = ArianeParser("tests/artifacts/pyproject.toml", pre_cache=False)
+            _ = ArianeParser("tests/artifacts/file.toml", pre_cache=False)
 
 
 if __name__ == "__main__":
