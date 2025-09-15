@@ -59,7 +59,7 @@ dependencies = [
     "defusedxml>=0.7,<0.8",
     "dicttoxml2>=2.1,<2.2",
     "orjson>=3.10,<3.12",
-    "xmltodict>=0.13,<0.15",
+    "xmltodict>=0.13,<1.1",
 ]
 
 [project.optional-dependencies]
