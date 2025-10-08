@@ -126,7 +126,6 @@ exclude = [
 # Same as Django: https://github.com/cookiecutter/cookiecutter-django/issues/4792.
 line-length = 88
 indent-width = 4
-target-version = "py312"
 
 [tool.ruff.lint]
 select = [

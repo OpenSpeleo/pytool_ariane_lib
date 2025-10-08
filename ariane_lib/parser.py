@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+from __future__ import annotations
 
 import hashlib
 import tempfile
@@ -186,6 +186,7 @@ class ArianeParser(metaclass=KeyMapMeta):
         for shot in self.shots:
             try:
                 section_map[shot.section].add_shot(shot)
-            except KeyError:
+            except KeyError:  # noqa: PERF203
                 section_map[shot.section] = SurveySection(shot=shot)
+
         return list(section_map.values())

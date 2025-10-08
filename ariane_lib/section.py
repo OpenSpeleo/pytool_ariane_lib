@@ -1,10 +1,12 @@
-#!/usr/bin/env python
+from __future__ import annotations
 
 import statistics
 import weakref
 from functools import cached_property
+from typing import TYPE_CHECKING
 
-from ariane_lib.shot import SurveyShot
+if TYPE_CHECKING:
+    from ariane_lib.shot import SurveyShot
 
 
 def rounded_property(decimal):
