@@ -88,7 +88,7 @@ jobs:
           uv run flit build --format wheel
 
       - name: Upload wheels
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           path: dist
           if-no-files-found: error
