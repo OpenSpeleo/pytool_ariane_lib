@@ -47,7 +47,7 @@ classifiers = [
 dependencies = [
     "defusedxml>=0.7,<0.8",
     "dicttoxml2>=2.1,<2.2",
-    "orjson>=3.10,<3.12",
+    "orjson>=3.11.8,<3.12",
     "xmltodict>=1.0,<1.1",
 ]
 dynamic = ["description", "version"]
