@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from collections import UserDict
 from collections import UserList
 from typing import Any
@@ -60,7 +60,7 @@ class KeyMapMeta(type):
 
                 case "date":
                     year, month, day = (int(v) for v in value.split("-"))
-                    return datetime.datetime(year=year, month=month, day=day)  # noqa: DTZ001
+                    return dt.datetime(year=year, month=month, day=day)  # noqa: DTZ001
 
                 case "profiletype":
                     return ProfileType.from_str(value)
